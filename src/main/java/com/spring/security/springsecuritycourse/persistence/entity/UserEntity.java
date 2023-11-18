@@ -1,11 +1,17 @@
 package com.spring.security.springsecuritycourse.persistence.entity;
 
 import java.util.Collection;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.spring.security.springsecuritycourse.persistence.util.Role;
+import com.spring.security.springsecuritycourse.persistence.util.RolePermission;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,14 +37,23 @@ public class UserEntity implements UserDetails{
     private String userName;
     private String password;
 
-    //@Enumerated
-    //private Role role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        if (role == null) {return null;}
+        if (role.getPermissions() == null) {return null;}
+        //return role.getPermissions().stream().map(each->{
+        //    String name = each.name();
+        //    return new SimpleGrantedAuthority(name);
+        //}).collect(Collectors.toList());
+        return role.getPermissions().stream()
+                .map(each -> each.name())
+                .map(name -> new SimpleGrantedAuthority(name))
+                .collect(Collectors.toList());
     }
     @Override
     public String getPassword() {
