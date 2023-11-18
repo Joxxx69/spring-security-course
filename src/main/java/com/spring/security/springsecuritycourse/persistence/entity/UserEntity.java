@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.spring.security.springsecuritycourse.persistence.util.Role;
 import com.spring.security.springsecuritycourse.persistence.util.RolePermission;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -34,6 +35,7 @@ public class UserEntity implements UserDetails{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long userId;
     private String name;
+    @Column(unique = true)
     private String userName;
     private String password;
 
