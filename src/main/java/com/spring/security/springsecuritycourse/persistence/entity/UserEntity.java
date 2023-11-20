@@ -1,14 +1,12 @@
 package com.spring.security.springsecuritycourse.persistence.entity;
 
 import java.util.Collection;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.spring.security.springsecuritycourse.persistence.util.Role;
-import com.spring.security.springsecuritycourse.persistence.util.RolePermission;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
