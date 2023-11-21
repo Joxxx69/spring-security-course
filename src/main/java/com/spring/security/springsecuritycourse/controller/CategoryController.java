@@ -28,12 +28,19 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @GetMapping("/categori")
+    public ResponseEntity<String> saludo() {
+        return ResponseEntity.ok("Hola a todos");
+    }
+
     @GetMapping
     public ResponseEntity<Page<Category>> findAll(Pageable pageable) {
+        System.out.println("controller found all categories");
         Page<Category> categoryPage = categoryService.findAll(pageable);
         if (categoryPage.hasContent()) {
             return ResponseEntity.ok(categoryPage);
         }
+        //return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         //return ResponseEntity.notFound().build();
     }

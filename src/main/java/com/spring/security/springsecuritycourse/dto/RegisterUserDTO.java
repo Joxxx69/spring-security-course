@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class RegisterUserDTO implements Serializable {
     
     private Long id;
-    private String userName;
+    private String username;
     private String name;
     private String role;
     private String jwt;

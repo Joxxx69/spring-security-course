@@ -4,12 +4,16 @@ import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 
+import javax.crypto.SecretKey;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import io.jsonwebtoken.Claims;
 //import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
 //import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
@@ -32,24 +36,32 @@ public class JwtService {
 
         String jwt = Jwts.builder()
                 .claims(extraClaims)
-                //.setClaims(extraClaims)
                 .subject(user.getUsername())    
-                //.setSubject(user.getUsername())
                 .issuedAt(issuedAt)
-                //.setIssuedAt(issuedAt)
                 .expiration(expiration)
-                //.setExpiration(expiration)
                 .header().type("JWT").and()
-                //.setHeaderParam(Header.TYPE,Header.JWT_TYPE)
                 .signWith(generateKey()).compact();
-                //.signWith(generateKey(),Jwts.SIG.HS256).compact();
-                //.signWith(generateKey(), SignatureAlgorithm.HS256).compact();
 
         return jwt;
     };
 
     public Key generateKey() {
-        byte[] key = SECRET_KEY.getBytes();
-        return Keys.hmacShaKeyFor(key);
+        byte[] passwordDecoded = Decoders.BASE64.decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(passwordDecoded);
     }
+
+    public String extractUsername(String jwt) {
+
+        return extractAllClaims(jwt).getSubject();
+    }
+
+    private Claims extractAllClaims(String jwt) {
+
+        return Jwts.parser()
+                .verifyWith((SecretKey) generateKey()).build()
+                .parseSignedClaims(jwt) // parsea un token firmado
+                .getPayload();
+    }
+    
+    
 }

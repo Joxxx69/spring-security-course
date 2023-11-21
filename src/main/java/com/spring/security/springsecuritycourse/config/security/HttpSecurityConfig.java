@@ -20,7 +20,7 @@ public class HttpSecurityConfig {
     
     //HttpSecurity -> permite personalizar como se gestionan y protegen las peticiones http
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         SecurityFilterChain filterChain = http
             .csrf(csrfConfig -> csrfConfig.disable()) // desactiva el uso de tokens ya que usaremos Jwt
@@ -28,9 +28,9 @@ public class HttpSecurityConfig {
             .authenticationProvider(daoAuthProvider)
             .authorizeHttpRequests(authReqConfig->{  //configuracion de rutas publicas
                     authReqConfig.requestMatchers(HttpMethod.POST, "/customers").permitAll();
-                    //authReqConfig.requestMatchers(HttpMethod.POST, "/auth/authenticate");
-                    //authReqConfig.requestMatchers(HttpMethod.POST,"/auth/validate");
-                    authReqConfig.requestMatchers(HttpMethod.POST, "/auth/**");
+                    authReqConfig.requestMatchers(HttpMethod.POST, "/auth/authenticate").permitAll();
+                    authReqConfig.requestMatchers(HttpMethod.GET,"/auth/validate-token").permitAll();
+                    //authReqConfig.requestMatchers(HttpMethod.POST, "/auth/**");
                     
                     authReqConfig.anyRequest().authenticated();
              })

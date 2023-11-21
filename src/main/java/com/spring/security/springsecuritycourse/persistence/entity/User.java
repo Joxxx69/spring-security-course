@@ -27,14 +27,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Table(name = "tbl_user")
-public class UserEntity implements UserDetails{
+public class User implements UserDetails{
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long userId;
     private String name;
     @Column(unique = true)
-    private String userName;
+    private String username;
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -62,7 +62,7 @@ public class UserEntity implements UserDetails{
 
     @Override
     public String getUsername() {
-        return userName;
+        return username;
     }    
     
 
