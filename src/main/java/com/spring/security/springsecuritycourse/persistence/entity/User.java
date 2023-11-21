@@ -1,6 +1,6 @@
 package com.spring.security.springsecuritycourse.persistence.entity;
 
-import java.util.Collection;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -50,10 +50,14 @@ public class User implements UserDetails{
         //    String name = each.name();
         //    return new SimpleGrantedAuthority(name);
         //}).collect(Collectors.toList());
-        return role.getPermissions().stream()
+
+        List<SimpleGrantedAuthority> authorities = role.getPermissions().stream()
                 .map(each -> each.name())
                 .map(name -> new SimpleGrantedAuthority(name))
                 .collect(Collectors.toList());
+
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+this.role.name()));
+        return authorities;
     }
     @Override
     public String getPassword() {
