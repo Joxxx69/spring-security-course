@@ -13,13 +13,13 @@ public class SpringsecurityCourseApplication {
 		SpringApplication.run(SpringsecurityCourseApplication.class, args);
 
 	}
-	@Bean 
-	CommandLineRunner createPasswordCommand(PasswordEncoder passwordEncoder){
-		return arg->{
-			System.out.println(passwordEncoder.encode("clave123"));
-			System.out.println(passwordEncoder.encode("clave234"));
-			System.out.println(passwordEncoder.encode("clave345"));
-		};
-	}
+	//@Bean 
+	//CommandLineRunner createPasswordCommand(PasswordEncoder passwordEncoder){
+	//	return arg->{
+	//		System.out.println(passwordEncoder.encode("clave123"));
+	//		System.out.println(passwordEncoder.encode("clave234"));
+	//		System.out.println(passwordEncoder.encode("clave345"));
+	//	};
+	//}
 
 }

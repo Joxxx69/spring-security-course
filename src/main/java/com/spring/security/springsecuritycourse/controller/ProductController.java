@@ -30,6 +30,7 @@ public class ProductController {
     private ProductService productService;
     
     @PreAuthorize("hasAnyRole('ADMINISTRATOR','ASSISTANT_ADMINISTRATOR')")
+    //@PreAuthorize("hasAuthority('READ_ONE_PRODUCT')")
     @GetMapping
     public ResponseEntity<Page<Product>> findAll(Pageable pageable) {
         Page<Product> productsPage = productService.findAll(pageable);
@@ -40,6 +41,7 @@ public class ProductController {
         //return ResponseEntity.notFound().build();
     }
     @PreAuthorize("hasAnyRole('ADMINISTRATOR','ASSISTANT_ADMINISTRATOR')")
+    //@PreAuthorize("hasAuthority('READ_ALL_PRODUCTS')")
     @GetMapping("/{productId}")
     public ResponseEntity<Product> findOneById(@PathVariable Long productId) {
         Optional<Product> product = productService.findOneById(productId);
@@ -49,6 +51,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
     @PreAuthorize("hasRole('ADMINISTRATOR')")
+    //@PreAuthorize("hasAuthority('CREATE_ONE_PRODUCT')")
     @PostMapping
     public ResponseEntity<Product> createOne(@RequestBody @Valid SaveProductDTO SaveProductDTO) {
         Product product = productService.createOne(SaveProductDTO);
@@ -56,6 +59,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
     @PreAuthorize("hasAnyRole('ADMINISTRATOR','ASSISTANT_ADMINISTRATOR')")
+    //@PreAuthorize("hasAuthority('UPDATE_ONE_PRODUCT')")
     @PutMapping("/{productId}")
     public ResponseEntity<Product> updateOneById(@PathVariable Long productId,
     @RequestBody @Valid SaveProductDTO saveProductDTO) {
@@ -64,8 +68,9 @@ public class ProductController {
         return ResponseEntity.ok(product);
         //return ResponseEntity.status(HttpStatus.OK).body(product);
     }
-    @PutMapping("/{productId}/disabled")
     @PreAuthorize("hasRole('ADMINISTRATOR')")
+    //@PreAuthorize("hasAuthority('DISABLED_ONE_PRODUCT')")
+    @PutMapping("/{productId}/disabled")
     public ResponseEntity<Product> disableOneById(@PathVariable Long productId) {
         Product product = productService.disableOneById(productId);
         return ResponseEntity.ok(product);
