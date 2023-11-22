@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -31,6 +32,9 @@ public class HttpSecurityConfig {
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Autowired
+    private AuthenticationEntryPoint authenticationEntryPoint;
     
     //HttpSecurity -> permite personalizar como se gestionan y protegen las peticiones http
     @Bean
@@ -42,9 +46,12 @@ public class HttpSecurityConfig {
             .authenticationProvider(daoAuthProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersAuthorities(authReqConfig))// Con Authorities
-                .authorizeHttpRequests(authReqConfig -> buildRequestMatchersRoles(authReqConfig)) // con roles
+            .exceptionHandling(exceptionConfig -> {
+                                exceptionConfig.authenticationEntryPoint(authenticationEntryPoint);
+                })
+            .authorizeHttpRequests(authReqConfig -> buildRequestMatchersRoles(authReqConfig)) // con roles
                 //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersRolesV2(authReqConfig)) // con roles
-                .build();
+            .build();
             
         return filterChain;
 
