@@ -21,9 +21,9 @@ import com.spring.security.springsecuritycourse.persistence.util.RolePermission;
 
 @Configuration
 @EnableWebSecurity //configura por default los elementos de se seguridad(authenticationConfiguration etc)
-@EnableMethodSecurity(
-    prePostEnabled = true
-)
+//@EnableMethodSecurity(
+//    prePostEnabled = true
+//)
 public class HttpSecurityConfig {
 
     @Autowired
@@ -42,8 +42,8 @@ public class HttpSecurityConfig {
             .authenticationProvider(daoAuthProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersAuthorities(authReqConfig))// Con Authorities
-                //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersRoles(authReqConfig)) // con roles
-                .authorizeHttpRequests(authReqConfig -> buildRequestMatchersRolesV2(authReqConfig)) // con roles
+                .authorizeHttpRequests(authReqConfig -> buildRequestMatchersRoles(authReqConfig)) // con roles
+                //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersRolesV2(authReqConfig)) // con roles
                 .build();
             
         return filterChain;
