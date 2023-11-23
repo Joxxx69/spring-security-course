@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AuthorizeH
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.spring.security.springsecuritycourse.config.security.filter.JwtAuthenticationFilter;
@@ -35,23 +36,27 @@ public class HttpSecurityConfig {
 
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    private AccessDeniedHandler accessDeniedHandler;
     
     //HttpSecurity -> permite personalizar como se gestionan y protegen las peticiones http
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         SecurityFilterChain filterChain = http
-            .csrf(csrfConfig -> csrfConfig.disable()) // desactiva el uso de tokens ya que usaremos Jwt
-            .sessionManagement(sessMagConfig->sessMagConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // sesion sin estado
-            .authenticationProvider(daoAuthProvider)
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .csrf(csrfConfig -> csrfConfig.disable()) // desactiva el uso de tokens ya que usaremos Jwt
+                .sessionManagement(sessMagConfig->sessMagConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // sesion sin estado
+                .authenticationProvider(daoAuthProvider)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersAuthorities(authReqConfig))// Con Authorities
-            .exceptionHandling(exceptionConfig -> {
-                                exceptionConfig.authenticationEntryPoint(authenticationEntryPoint);
+                .exceptionHandling(exceptionConfig -> {
+                        exceptionConfig.authenticationEntryPoint(authenticationEntryPoint);
+                        exceptionConfig.accessDeniedHandler(accessDeniedHandler);
                 })
-            .authorizeHttpRequests(authReqConfig -> buildRequestMatchersRoles(authReqConfig)) // con roles
+                .authorizeHttpRequests(authReqConfig -> buildRequestMatchersRoles(authReqConfig)) // con roles
                 //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersRolesV2(authReqConfig)) // con roles
-            .build();
+                .build();
             
         return filterChain;
 

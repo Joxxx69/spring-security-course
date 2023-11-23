@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
         apiErrorDTO.setMessage("Acceso denegado. No tienes los permisos para acceder a esta funcion"
                 + "Por favor, contacta al administrador si crees que esto es un error");
         apiErrorDTO.setTimestamp(LocalDateTime.now());
-        
+
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiErrorDTO);
 
     }
