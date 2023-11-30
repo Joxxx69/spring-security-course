@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.security.springsecuritycourse.dto.auth.AuthenticationRequest;
 import com.spring.security.springsecuritycourse.dto.auth.AuthenticationResponse;
-import com.spring.security.springsecuritycourse.persistence.entity.User;
+import com.spring.security.springsecuritycourse.persistence.entity.security.User;
 import com.spring.security.springsecuritycourse.service.auth.AuthenticationService;
 
 import jakarta.validation.Valid;

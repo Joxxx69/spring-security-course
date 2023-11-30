@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.spring.security.springsecuritycourse.exception.ObjectNotFoundException;
-import com.spring.security.springsecuritycourse.persistence.repository.UserRepository;
+import com.spring.security.springsecuritycourse.persistence.repository.security.UserRepository;
 
 @Configuration
 public class SecurityBeansInjector {

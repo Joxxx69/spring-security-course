@@ -9,9 +9,12 @@ import org.springframework.util.StringUtils;
 
 import com.spring.security.springsecuritycourse.dto.SaveUserDTO;
 import com.spring.security.springsecuritycourse.exception.InvalidPasswordException;
-import com.spring.security.springsecuritycourse.persistence.entity.User;
-import com.spring.security.springsecuritycourse.persistence.repository.UserRepository;
-import com.spring.security.springsecuritycourse.persistence.util.Role;
+import com.spring.security.springsecuritycourse.exception.ObjectNotFoundException;
+import com.spring.security.springsecuritycourse.persistence.entity.security.Role;
+import com.spring.security.springsecuritycourse.persistence.entity.security.User;
+import com.spring.security.springsecuritycourse.persistence.repository.security.UserRepository;
+import com.spring.security.springsecuritycourse.persistence.util.RoleEnumm;
+import com.spring.security.springsecuritycourse.service.RoleService;
 import com.spring.security.springsecuritycourse.service.UserService;
 
 
@@ -24,16 +27,19 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RoleService roleService;
+
     @Override
     public User registerOneCustomer(SaveUserDTO newUser) {
-        User user = new User();
-
         validatePassword(newUser);
-        
+        User user = new User();
         user.setPassword(passwordEncoder.encode(newUser.getPassword()));
         user.setName(newUser.getName());
         user.setUsername(newUser.getUsername());
-        user.setRole(Role.CUSTOMER);
+        Role defaultRole = roleService.findeDefaultRole()
+                .orElseThrow(()-> new ObjectNotFoundException("Role not found. Default Role"));
+        user.setRole(defaultRole);
 
         return userRepository.save(user);
 

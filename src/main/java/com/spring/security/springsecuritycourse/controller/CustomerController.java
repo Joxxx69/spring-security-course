@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.security.springsecuritycourse.dto.RegisterUserDTO;
 import com.spring.security.springsecuritycourse.dto.SaveUserDTO;
-import com.spring.security.springsecuritycourse.persistence.entity.User;
+import com.spring.security.springsecuritycourse.persistence.entity.security.User;
 import com.spring.security.springsecuritycourse.service.auth.AuthenticationService;
 
 import jakarta.validation.Valid;

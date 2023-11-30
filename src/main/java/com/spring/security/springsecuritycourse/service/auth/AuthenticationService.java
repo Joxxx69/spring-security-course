@@ -16,7 +16,7 @@ import com.spring.security.springsecuritycourse.dto.SaveUserDTO;
 import com.spring.security.springsecuritycourse.dto.auth.AuthenticationRequest;
 import com.spring.security.springsecuritycourse.dto.auth.AuthenticationResponse;
 import com.spring.security.springsecuritycourse.exception.ObjectNotFoundException;
-import com.spring.security.springsecuritycourse.persistence.entity.User;
+import com.spring.security.springsecuritycourse.persistence.entity.security.User;
 import com.spring.security.springsecuritycourse.service.UserService;
 
 @Service
@@ -38,7 +38,7 @@ public class AuthenticationService {
         RegisterUserDTO userDTO = new RegisterUserDTO();
         userDTO.setId(user.getUserId());
         userDTO.setName(user.getName());
-        userDTO.setRole(user.getRole().name());
+        userDTO.setRole(user.getRole().getName());
         userDTO.setUsername(user.getUsername());
 
         String jwt = jwtService.generateToken(user, generateExtraClamins(user));
@@ -49,7 +49,7 @@ public class AuthenticationService {
     public Map<String, Object> generateExtraClamins(User user) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("name", user.getName());
-        extraClaims.put("role", user.getRole());
+        extraClaims.put("role", user.getRole().getName());
         extraClaims.put("authorities", user.getAuthorities());
 
         return extraClaims;

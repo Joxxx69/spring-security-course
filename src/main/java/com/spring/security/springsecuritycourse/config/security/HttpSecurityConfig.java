@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,11 +15,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.spring.security.springsecuritycourse.config.security.filter.JwtAuthenticationFilter;
-import com.spring.security.springsecuritycourse.persistence.util.Role;
-import com.spring.security.springsecuritycourse.persistence.util.RolePermission;
+import com.spring.security.springsecuritycourse.persistence.util.RoleEnumm;
+import com.spring.security.springsecuritycourse.persistence.util.RoleEnumm;
+import com.spring.security.springsecuritycourse.persistence.util.RolePermissionEnumm;
+import com.spring.security.springsecuritycourse.persistence.util.RolePermissionEnumm;
 
 
 @Configuration
@@ -39,6 +43,9 @@ public class HttpSecurityConfig {
 
     @Autowired
     private AccessDeniedHandler accessDeniedHandler;
+
+    @Autowired
+    private AuthorizationManager<RequestAuthorizationContext> authorizationManager;
     
     //HttpSecurity -> permite personalizar como se gestionan y protegen las peticiones http
     @Bean
@@ -54,7 +61,10 @@ public class HttpSecurityConfig {
                         exceptionConfig.authenticationEntryPoint(authenticationEntryPoint);
                         exceptionConfig.accessDeniedHandler(accessDeniedHandler);
                 })
-                .authorizeHttpRequests(authReqConfig -> buildRequestMatchersRoles(authReqConfig)) // con roles
+                .authorizeHttpRequests(authReqConfig -> {
+                        authReqConfig.anyRequest().access(authorizationManager);
+                })
+                //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersRoles(authReqConfig)) // con roles
                 //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersRolesV2(authReqConfig)) // con roles
                 .build();
             
@@ -77,39 +87,39 @@ public class HttpSecurityConfig {
         * Autorizacion de endpoints de productos
         */
         authReqConfig.requestMatchers(HttpMethod.GET, "/products")
-                .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
+                .hasAnyRole(RoleEnumm.ADMINISTRATOR.name(), RoleEnumm.ASSISTANT_ADMINISTRATOR.name());
 
         authReqConfig.requestMatchers(HttpMethod.GET, "/products/{productId}")
-                .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
+                .hasAnyRole(RoleEnumm.ADMINISTRATOR.name(), RoleEnumm.ASSISTANT_ADMINISTRATOR.name());
                 
         authReqConfig.requestMatchers(HttpMethod.POST, "/products")
-                .hasRole(Role.ADMINISTRATOR.name());
+                .hasRole(RoleEnumm.ADMINISTRATOR.name());
                 
         authReqConfig.requestMatchers(HttpMethod.PUT, "/products/{productId}")
-                .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
+                .hasAnyRole(RoleEnumm.ADMINISTRATOR.name(), RoleEnumm.ASSISTANT_ADMINISTRATOR.name());
                 
         authReqConfig.requestMatchers(HttpMethod.PUT, "/products/{productId}/disabled")
-                .hasRole(Role.ADMINISTRATOR.name());
+                .hasRole(RoleEnumm.ADMINISTRATOR.name());
         /*
         * Autorizacion de endpoints de categories
         */
         authReqConfig.requestMatchers(HttpMethod.GET, "/categories")
-                .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
+                .hasAnyRole(RoleEnumm.ADMINISTRATOR.name(), RoleEnumm.ASSISTANT_ADMINISTRATOR.name());
 
         authReqConfig.requestMatchers(HttpMethod.GET, "/categories/{categoryId}")
-                .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
+                .hasAnyRole(RoleEnumm.ADMINISTRATOR.name(), RoleEnumm.ASSISTANT_ADMINISTRATOR.name());
 
         authReqConfig.requestMatchers(HttpMethod.POST, "/categories")
-                .hasRole(Role.ADMINISTRATOR.name());
+                .hasRole(RoleEnumm.ADMINISTRATOR.name());
 
         authReqConfig.requestMatchers(HttpMethod.PUT, "/categories/{categoryId}")
-                .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
+                .hasAnyRole(RoleEnumm.ADMINISTRATOR.name(), RoleEnumm.ASSISTANT_ADMINISTRATOR.name());
 
         authReqConfig.requestMatchers(HttpMethod.PUT, "/categories/{categoryId}/disabled")
-                .hasRole(Role.ADMINISTRATOR.name());
+                .hasRole(RoleEnumm.ADMINISTRATOR.name());
 
         authReqConfig.requestMatchers(HttpMethod.GET, "/auth/profile")
-                .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name(),Role.CUSTOMER.name());
+                .hasAnyRole(RoleEnumm.ADMINISTRATOR.name(), RoleEnumm.ASSISTANT_ADMINISTRATOR.name(),RoleEnumm.CUSTOMER.name());
 
 
         authReqConfig.requestMatchers(HttpMethod.POST, "/customers").permitAll();
@@ -127,30 +137,30 @@ public class HttpSecurityConfig {
          * Autorizacion de endpoints de productos
          */
         authReqConfig.requestMatchers(HttpMethod.GET, "/products")
-                .hasAuthority(RolePermission.READ_ALL_PRODUCTS.name());
+                .hasAuthority(RolePermissionEnumm.READ_ALL_PRODUCTS.name());
         authReqConfig.requestMatchers(HttpMethod.GET, "/products/{productId}")
-                .hasAuthority(RolePermission.READ_ONE_PRODUCT.name());
+                .hasAuthority(RolePermissionEnumm.READ_ONE_PRODUCT.name());
         authReqConfig.requestMatchers(HttpMethod.POST, "/products")
-                .hasAuthority(RolePermission.CREATE_ONE_PRODUCT.name());
+                .hasAuthority(RolePermissionEnumm.CREATE_ONE_PRODUCT.name());
         authReqConfig.requestMatchers(HttpMethod.PUT, "/products/{productId}")
-                .hasAuthority(RolePermission.UPDATE_ONE_PRODUCT.name());
+                .hasAuthority(RolePermissionEnumm.UPDATE_ONE_PRODUCT.name());
         authReqConfig.requestMatchers(HttpMethod.PUT, "/products/{productId}/disabled")
-                .hasAuthority(RolePermission.DISABLED_ONE_PRODUCT.name());
+                .hasAuthority(RolePermissionEnumm.DISABLED_ONE_PRODUCT.name());
         /*
          * Autorizacion de endpoints de categories
          */
         authReqConfig.requestMatchers(HttpMethod.GET, "/categories")
-                .hasAuthority(RolePermission.READ_ALL_CATEGORIES.name());
+                .hasAuthority(RolePermissionEnumm.READ_ALL_CATEGORIES.name());
         authReqConfig.requestMatchers(HttpMethod.GET, "/categories/{categoryId}")
-                .hasAuthority(RolePermission.READ_ONE_CATEGORY.name());
+                .hasAuthority(RolePermissionEnumm.READ_ONE_CATEGORY.name());
         authReqConfig.requestMatchers(HttpMethod.POST, "/categories")
-                .hasAuthority(RolePermission.CREATE_ONE_CATEGORY.name());
+                .hasAuthority(RolePermissionEnumm.CREATE_ONE_CATEGORY.name());
         authReqConfig.requestMatchers(HttpMethod.PUT, "/categories/{categoryId}")
-                .hasAuthority(RolePermission.UPDATE_ONE_CATEGORY.name());
+                .hasAuthority(RolePermissionEnumm.UPDATE_ONE_CATEGORY.name());
         authReqConfig.requestMatchers(HttpMethod.PUT, "/categories/{categoryId}/disabled")
-                .hasAuthority(RolePermission.DISABLED_ONE_CATEGORY.name());
+                .hasAuthority(RolePermissionEnumm.DISABLED_ONE_CATEGORY.name());
         authReqConfig.requestMatchers(HttpMethod.GET, "/auth/profile")
-                .hasAuthority(RolePermission.READ_MY_PROFILE.name());
+                .hasAuthority(RolePermissionEnumm.READ_MY_PROFILE.name());
 
 
         authReqConfig.requestMatchers(HttpMethod.POST, "/customers").permitAll();

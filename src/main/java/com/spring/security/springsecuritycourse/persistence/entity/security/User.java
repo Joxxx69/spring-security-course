@@ -1,4 +1,4 @@
-package com.spring.security.springsecuritycourse.persistence.entity;
+package com.spring.security.springsecuritycourse.persistence.entity.security;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -6,7 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.spring.security.springsecuritycourse.persistence.util.Role;
+
+import com.spring.security.springsecuritycourse.persistence.util.RoleEnumm;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +16,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,8 +40,14 @@ public class User implements UserDetails{
     private String username;
     private String password;
 
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(
+        name = "role_id",
+        referencedColumnName = "roleId"
+    )
     private Role role;
+    //private RoleEnum roleEnum;
 
 
 
@@ -46,17 +55,17 @@ public class User implements UserDetails{
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (role == null) {return null;}
         if (role.getPermissions() == null) {return null;}
-        //return role.getPermissions().stream().map(each->{
+        //return roleEnum.getPermissions().stream().map(each->{
         //    String name = each.name();
         //    return new SimpleGrantedAuthority(name);
         //}).collect(Collectors.toList());
 
         List<SimpleGrantedAuthority> authorities = role.getPermissions().stream()
-                .map(each -> each.name())
+                .map(each -> each.getOperation().getName())
                 .map(name -> new SimpleGrantedAuthority(name))
                 .collect(Collectors.toList());
 
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+this.role.name()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+this.role.getName()));
         return authorities;
     }
     @Override

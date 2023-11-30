@@ -1,6 +1,6 @@
 package com.spring.security.springsecuritycourse.persistence.util;
 
-public enum RolePermission {
+public enum RolePermissionEnumm {
     READ_ALL_PRODUCTS,
     READ_ONE_PRODUCT,
     CREATE_ONE_PRODUCT,

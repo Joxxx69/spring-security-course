@@ -12,7 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.spring.security.springsecuritycourse.exception.ObjectNotFoundException;
-import com.spring.security.springsecuritycourse.persistence.entity.User;
+import com.spring.security.springsecuritycourse.persistence.entity.security.User;
 import com.spring.security.springsecuritycourse.service.UserService;
 import com.spring.security.springsecuritycourse.service.auth.JwtService;
 
