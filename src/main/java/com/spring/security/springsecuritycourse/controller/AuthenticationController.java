@@ -24,14 +24,14 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
     
-    @PreAuthorize("permitAll")
+    //@PreAuthorize("permitAll")
     @GetMapping("/validate-token")
     public ResponseEntity<Boolean> validate(@RequestParam String jwt) {
         boolean isTokenValid = authenticationService.validateToken(jwt);
         return ResponseEntity.ok(isTokenValid);
     }
 
-    @PreAuthorize("permitAll")
+    //@PreAuthorize("permitAll")
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody @Valid AuthenticationRequest authenticationRequest) {
@@ -43,7 +43,7 @@ public class AuthenticationController {
     }
 
     // para el usuario que este logeado
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR','ASSISTANT_ADMINISTRATOR','CUSTOMER')")
+    //@PreAuthorize("hasAnyRole('ADMINISTRATOR','ASSISTANT_ADMINISTRATOR','CUSTOMER')")
     //@PreAuthorize("hasAuthority('READ_MY_PROFILE')")
     @GetMapping("/profile")
     public ResponseEntity<User> findMyProfile() {

@@ -29,7 +29,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR','ASSISTANT_ADMINISTRATOR')")
+    //@PreAuthorize("hasAnyRole('ADMINISTRATOR','ASSISTANT_ADMINISTRATOR')")
     //@PreAuthorize("hasAuthority('READ_ONE_PRODUCT')")
     @GetMapping
     public ResponseEntity<Page<Product>> findAll(Pageable pageable) {
@@ -40,7 +40,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         //return ResponseEntity.notFound().build();
     }
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR','ASSISTANT_ADMINISTRATOR')")
+    //@PreAuthorize("hasAnyRole('ADMINISTRATOR','ASSISTANT_ADMINISTRATOR')")
     //@PreAuthorize("hasAuthority('READ_ALL_PRODUCTS')")
     @GetMapping("/{productId}")
     public ResponseEntity<Product> findOneById(@PathVariable Long productId) {
@@ -50,7 +50,7 @@ public class ProductController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
-    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    //@PreAuthorize("hasRole('ADMINISTRATOR')")
     //@PreAuthorize("hasAuthority('CREATE_ONE_PRODUCT')")
     @PostMapping
     public ResponseEntity<Product> createOne(@RequestBody @Valid SaveProductDTO SaveProductDTO) {
@@ -58,7 +58,7 @@ public class ProductController {
         
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR','ASSISTANT_ADMINISTRATOR')")
+    //@PreAuthorize("hasAnyRole('ADMINISTRATOR','ASSISTANT_ADMINISTRATOR')")
     //@PreAuthorize("hasAuthority('UPDATE_ONE_PRODUCT')")
     @PutMapping("/{productId}")
     public ResponseEntity<Product> updateOneById(@PathVariable Long productId,
@@ -68,7 +68,7 @@ public class ProductController {
         return ResponseEntity.ok(product);
         //return ResponseEntity.status(HttpStatus.OK).body(product);
     }
-    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    //@PreAuthorize("hasRole('ADMINISTRATOR')")
     //@PreAuthorize("hasAuthority('DISABLED_ONE_PRODUCT')")
     @PutMapping("/{productId}/disabled")
     public ResponseEntity<Product> disableOneById(@PathVariable Long productId) {

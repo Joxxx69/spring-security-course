@@ -30,7 +30,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     //@PreAuthorize("hasAnyRole('ADMINISTRATOR','ASSISTANT_ADMINISTRATOR')")
-    @PreAuthorize("hasAuthority('READ_ALL_CATEGORIES')")
+    //@PreAuthorize("hasAuthority('READ_ALL_CATEGORIES')")
     @GetMapping
     public ResponseEntity<Page<Category>> findAll(Pageable pageable) {
         System.out.println("controller found all categories");
@@ -44,7 +44,7 @@ public class CategoryController {
     }
     
     //@PreAuthorize("hasAnyRole('ADMINISTRATOR','ASSISTANT_ADMINISTRATOR')")
-    @PreAuthorize("hasAuthority('READ_ONE_CATEGORIES')")
+    //@PreAuthorize("hasAuthority('READ_ONE_CATEGORIES')")
     @GetMapping("/{categoryId}")
     public ResponseEntity<Category> findOneById(@PathVariable Long categoryId) {
         Optional<Category> category = categoryService.findOneById(categoryId);
@@ -55,7 +55,7 @@ public class CategoryController {
     }
 
     //@PreAuthorize("hasRole('ADMINISTRATOR')")
-    @PreAuthorize("hasAuthority('CREATE_ONE_CATEGORY')")
+    //@PreAuthorize("hasAuthority('CREATE_ONE_CATEGORY')")
     @PostMapping
     public ResponseEntity<Category> createOne(@RequestBody @Valid SaveCategoryDTO SaveCategoryDTO) {
         Category category = categoryService.createOne(SaveCategoryDTO);
@@ -64,8 +64,7 @@ public class CategoryController {
     }
 
     //@PreAuthorize("hasAnyRole('ADMINISTRATOR','ASSISTANT_ADMINISTRATOR')")
-    @PreAuthorize("hasAuthority('UPDATE_ONE_CATEGORY')")
-
+    //@PreAuthorize("hasAuthority('UPDATE_ONE_CATEGORY')")
     @PutMapping("/{categoryId}")
     public ResponseEntity<Category> updateOneById(@PathVariable Long categoryId,
             @RequestBody @Valid SaveCategoryDTO saveCategoryDTO) {

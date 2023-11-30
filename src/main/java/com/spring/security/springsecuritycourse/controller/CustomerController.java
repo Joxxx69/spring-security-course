@@ -27,14 +27,14 @@ public class CustomerController {
     @Autowired
     private AuthenticationService authenticationService;
     
-    @PreAuthorize("permitAll")
+    //@PreAuthorize("permitAll")
     @PostMapping
     public ResponseEntity<RegisterUserDTO> registerOne(@RequestBody @Valid SaveUserDTO userNew) {
         RegisterUserDTO registeredUser = authenticationService.registerOneCustomer(userNew);
         return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
     }
 
-    @PreAuthorize("denyAll")
+    //@PreAuthorize("denyAll")
     @GetMapping
     public ResponseEntity<List<User>> findAll() {
         return ResponseEntity.ok(Arrays.asList());

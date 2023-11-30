@@ -12,7 +12,7 @@ public class TestController {
 
     @GetMapping("/admin")
     //@PreAuthorize("hasRole('ADMINISTRATOR')")
-    @PreAuthorize("hasAnyAuthority('')")
+    //@PreAuthorize("hasAnyAuthority('')")
     public ResponseEntity<String> saludo() {
         return ResponseEntity.ok("hola como estas admin");
     }
