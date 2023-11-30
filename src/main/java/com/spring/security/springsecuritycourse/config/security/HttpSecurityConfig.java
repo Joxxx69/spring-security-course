@@ -57,12 +57,12 @@ public class HttpSecurityConfig {
                 .authenticationProvider(daoAuthProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersAuthorities(authReqConfig))// Con Authorities
+                .authorizeHttpRequests(authReqConfig -> {
+                        authReqConfig.anyRequest().access(authorizationManager);
+                })
                 .exceptionHandling(exceptionConfig -> {
                         exceptionConfig.authenticationEntryPoint(authenticationEntryPoint);
                         exceptionConfig.accessDeniedHandler(accessDeniedHandler);
-                })
-                .authorizeHttpRequests(authReqConfig -> {
-                        authReqConfig.anyRequest().access(authorizationManager);
                 })
                 //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersRoles(authReqConfig)) // con roles
                 //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersRolesV2(authReqConfig)) // con roles
