@@ -1,13 +1,15 @@
 package com.spring.security.springsecuritycourse.config.security;
 
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authorization.AuthorizationManager;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
@@ -17,11 +19,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.spring.security.springsecuritycourse.config.security.filter.JwtAuthenticationFilter;
 import com.spring.security.springsecuritycourse.persistence.util.RoleEnumm;
-import com.spring.security.springsecuritycourse.persistence.util.RoleEnumm;
-import com.spring.security.springsecuritycourse.persistence.util.RolePermissionEnumm;
 import com.spring.security.springsecuritycourse.persistence.util.RolePermissionEnumm;
 
 
@@ -52,8 +55,10 @@ public class HttpSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         SecurityFilterChain filterChain = http
+                .cors(Customizer.withDefaults())
                 .csrf(csrfConfig -> csrfConfig.disable()) // desactiva el uso de tokens ya que usaremos Jwt
-                .sessionManagement(sessMagConfig->sessMagConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // sesion sin estado
+                .sessionManagement(sessMagConfig -> sessMagConfig
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // sesion sin estado
                 .authenticationProvider(daoAuthProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersAuthorities(authReqConfig))// Con Authorities
@@ -67,9 +72,21 @@ public class HttpSecurityConfig {
                 //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersRoles(authReqConfig)) // con roles
                 //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersRolesV2(authReqConfig)) // con roles
                 .build();
-            
-        return filterChain;
 
+            return filterChain;
+
+    }
+    
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("https://www.google.com","http://127.0.0.1:5500/"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     private void buildRequestMatchersRolesV2(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authReqConfig) {
