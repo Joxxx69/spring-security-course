@@ -80,7 +80,8 @@ public class HttpSecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://www.google.com","http://127.0.0.1:5500/"));
+        configuration.setAllowedOrigins(Arrays.asList("https://www.google.com","http://127.0.0.1:5500/","http://localhost:4200/","http://localhost:59478/"," http://localhost:57297/"));
+        //configuration.setAllowedOrigins(Arrays.asList("http://localhost:59967/"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

@@ -62,6 +62,8 @@ public class AuthenticationService {
         authenticationManager.authenticate(authentication); // recive un objeto de tipo Authentication para usar el Dao 
 
         UserDetails user = userService.findOneByUsername(authRequest.getUsername()).get();
+        System.out.println("************LOGIN***********");
+        System.out.println(user);
         String jwt = jwtService.generateToken(user, generateExtraClamins((User) user));
 
         AuthenticationResponse authResp = new AuthenticationResponse();

@@ -34,8 +34,10 @@ INSERT INTO role (name) VALUES ('ASSISTANT_ADMINISTRATOR');
 INSERT INTO role (name) VALUES ('ADMINISTRATOR');
 
 -- CREACIÓN DE PERMISOS
+--- CUSTOMER
 INSERT INTO granted_permission (role_id, operation_id) VALUES (1, 15);
 
+--- ASSISTANT_ADMINISTRATOR
 INSERT INTO granted_permission (role_id, operation_id) VALUES (2, 1);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (2, 2);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (2, 4);
@@ -44,6 +46,7 @@ INSERT INTO granted_permission (role_id, operation_id) VALUES (2, 7);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (2, 9);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (2, 15);
 
+--- ADMINISTRATOR
 INSERT INTO granted_permission (role_id, operation_id) VALUES (3, 1);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (3, 2);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (3, 3);
@@ -54,13 +57,14 @@ INSERT INTO granted_permission (role_id, operation_id) VALUES (3, 7);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (3, 8);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (3, 9);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (3, 10);
+INSERT INTO granted_permission (role_id, operation_id) VALUES (3, 11);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (3, 15);
 
 -- CREACION DE USUARIOS
 
-INSERT INTO tbl_user (username, name, password, role_id) VALUES ('lmarquez', 'luis márquez', '$2a$10$WkdLO1uzs4Ivi.tOpOgP7OAVaakcghzZusc9P44wuF7C4rXvYDGXS',1);
-INSERT INTO tbl_user (username, name, password, role_id) VALUES ('fperez', 'fulano pérez', '$2a$10$c9zeW.3jOdNQTl8G9NVi7e5jpLAHAqIvbhXCzUcrsrZTMwqSx8osO',2);
-INSERT INTO tbl_user (username, name, password, role_id) VALUES ('mhernandez', 'mengano hernández', '$2a$10$Uyy/g4LViKWdXaNcNg5bNedbEOHaiUhvgBFUfzI5onIXUB0EjONC6',3);
+INSERT INTO tbl_user (username, name, password, role_id) VALUES ('lmarquez@hotmail.com', 'luis márquez', '$2a$10$WkdLO1uzs4Ivi.tOpOgP7OAVaakcghzZusc9P44wuF7C4rXvYDGXS',1);
+INSERT INTO tbl_user (username, name, password, role_id) VALUES ('fperez@hotmail.com', 'fulano pérez', '$2a$10$c9zeW.3jOdNQTl8G9NVi7e5jpLAHAqIvbhXCzUcrsrZTMwqSx8osO',2);
+INSERT INTO tbl_user (username, name, password, role_id) VALUES ('mhernandez@hotmail.com', 'mengano hernández', '$2a$10$Uyy/g4LViKWdXaNcNg5bNedbEOHaiUhvgBFUfzI5onIXUB0EjONC6',3);
 
 -- CREACIÓN DE CATEGORIAS
 INSERT INTO category (name, status) VALUES ('Electrónica', 'ENABLED');

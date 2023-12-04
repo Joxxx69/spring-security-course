@@ -3,6 +3,8 @@ package com.spring.security.springsecuritycourse.service.impl;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -10,6 +12,7 @@ import org.springframework.util.StringUtils;
 import com.spring.security.springsecuritycourse.dto.SaveUserDTO;
 import com.spring.security.springsecuritycourse.exception.InvalidPasswordException;
 import com.spring.security.springsecuritycourse.exception.ObjectNotFoundException;
+import com.spring.security.springsecuritycourse.persistence.entity.Product;
 import com.spring.security.springsecuritycourse.persistence.entity.security.Role;
 import com.spring.security.springsecuritycourse.persistence.entity.security.User;
 import com.spring.security.springsecuritycourse.persistence.repository.security.UserRepository;
@@ -58,6 +61,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findOneByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
+
     }
     
 }
